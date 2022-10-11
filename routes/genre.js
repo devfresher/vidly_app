@@ -1,80 +1,48 @@
-const Joi = require('joi')
 const { Router } = require("express");
+const { Genre, validate } = require("../models/genre");
 const router = Router();
 
-
-
-router.get("/", (req, res) => {
-    if (!genres || genres == "") return res.json("No resource found").status(404)
+router.get("/", async (req, res) => {
+    const genres = await Genre.find().sort({ name: 1 })
+    if (!genres || genres == "") return res.status(404).json("No resource found")
+    
     res.json(genres)
 })
 
-router.get("/:id", (req, res) => {
-    let genre = genres.find(g => g.id == parseInt(req.params.id))
-    if (!genre || genre == "") return res.json("Resource not found").status(404)
-
+router.get("/:id", async(req, res) => {
+    const genre = await Genre.findById(req.params.id)
+    if (!genre) return res.status(404).json("Resource not found")
+    
     res.json(genre);
 })
 
-router.post("/", (req, res) => {
-    let {error} = validateGenre(req.body);
-    if (error) return res.json(error.details[0].message).status(400)
+router.post("/", async (req, res) => {
+    let { error } = validate(req.body);
+    if (error) return res.status(400).json(error.details[0].message)
 
-    let genre = {
-        id: genres.length + 1,
-        title: req.body.title,
-        created: Date.now()
-    }
+    let genre = new Genre({ name: req.body.name })
+    genre = await genre.save()
 
-    genres.push(genre);
     res.json(genre)
 })
 
-router.put("/:id", (req, res) => {
-    let genre = genres.find(g => g.id == parseInt(req.params.id))
-    if (!genre || genre == "") return res.json("Resource not found").status(404)
+router.put("/:id", async (req, res) => {
+    let { error } = validate(req.body);
+    if (error) return res.status(400).json(error.details[0].message)
 
-    genre.title = req.body.title
-    res.json(genre)
+    const genre = await Genre.findByIdAndUpdate(req.params.id, {name : req.body.name}, {
+        new: true
+    })
+    if (!genre) return res.status(404).json("Resource not found")
+
+    res.json(genre);
 });
 
-router.delete("/:id", (req, res) => {
-    let genre = genres.find(g => g.id == parseInt(req.params.id))
-    if (!genre || genre == "") return res.json("Resource not found").status(404)
+router.delete("/:id", async (req, res) => {
+    const genre = await Genre.findByIdAndRemove(req.params.id)
+    if (!genre) return res.status(404).json("Resource not found")
 
-    genreIndex = genres.indexOf(genre);
-    genres.splice(genreIndex, 1)
-    res.json(genre)
+    res.send(genre)
 })
-
-let genres = [
-    {
-        id: 1,
-        title: "Romance",
-        created: Date.now(),
-    },
-    {
-        id: 2,
-        title: "Fiction",
-        created: Date.now(),
-    },
-    {
-        id: 3,
-        title: "Non Fiction",
-        created: Date.now(),
-    }
-]
-
-function validateGenre(genre) {
-    const schema = Joi.object({
-        title: Joi.string()
-            .min(3)
-            .max(255)
-            .required(),
-    })
-
-    return schema.validate(genre);
-}
-
 
 module.exports = router
