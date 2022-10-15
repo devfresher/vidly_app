@@ -1,18 +1,17 @@
-const config = require('config');
-const mongoose = require('mongoose');
 const express = require('express');
 const genres = require('./routes/genre');
 const customers = require('./routes/customer');
+const movies = require('./routes/movie');
+const rentals = require('./routes/rentals');
 
+const { db } = require('./models/db');
 const app = express()
-
-mongoose.connect(config.get('dbConfig.url'))
-    .then(() => {console.log("Connected to DB");})
-    .catch((err) => {console.log("Error connecting to the DB", err);})
 
 app.use(express.json());
 app.use('/api/genres', genres)
 app.use('/api/customers', customers)
+app.use('/api/movies', movies)
+app.use('/api/rentals', rentals)
 
 const hostname = "127.0.0.1"
 const port = process.env.PORT || 5000
