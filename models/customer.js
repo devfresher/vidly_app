@@ -1,7 +1,7 @@
-const Joi = require('joi')
-const { default: mongoose } = require('mongoose');
+const Joi = require('joi');
+const { db } = require('./db');
 
-const Customer = mongoose.model('Customer', new mongoose.Schema({
+const Customer = db.model('Customer', new db.Schema({
     name: {
         type: String,
         required: true,

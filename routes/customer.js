@@ -1,6 +1,5 @@
-const { Router } = require("express");
+const router = require("express").Router();
 const { Customer, validate } = require("../models/customer");
-const router = Router();
 
 router.get("/", async (req, res) => {
     const customers = await Customer.find().sort({ name: 1 })
