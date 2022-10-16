@@ -1,6 +1,7 @@
+const _ = require('lodash');
 const router = require("express").Router();
-const { User, validate } = require("../models/user");
-lodash
+const { User, validate, hashPassword } = require("../models/user");
+
 
 router.get("/", async (req, res) => {
     const users = await User.find().sort({ name: 1 })
@@ -23,16 +24,11 @@ router.post("/", async (req, res) => {
     let user = await User.findOne({ email: req.body.email })
     if (user) return res.status(400).send("Email already exit")
 
-    const hashedPassword = req.body.password
-
-    user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: hashedPassword
-    })
+    user = new User(_.pick(req.body, ['name', 'email', 'password']))
+    user.password  = await hashPassword(req.body.password)
     
     await user.save()
-    res.json(user)
+    res.json(_.pick(user, ['_id', 'name', 'email']))
 })
 
 router.put("/:id", async (req, res) => {

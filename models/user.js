@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const bcrypt = require('bcrypt');
 const { db } = require('./db');
 
 const User = db.model('User', new db.Schema({
@@ -36,5 +37,11 @@ function validateUser(user) {
     return schema.validate(user);
 }
 
+async function hashPassword (password) {
+    const salt = await bcrypt.genSalt(10)
+    return await bcrypt.hash(password, salt)
+}
+
 exports.User = User
 exports.validate = validateUser
+exports.hashPassword = hashPassword
