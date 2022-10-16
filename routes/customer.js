@@ -10,11 +10,15 @@ router.get("/", async (req, res) => {
     res.json(customers)
 })
 
-router.get("/:id", async (req, res) => {
-    const customer = await Customer.findById(req.params.id)
-    if (!customer) return res.status(404).json("Resource not found")
-
-    res.json(customer);
+router.get("/:id", async (req, res, next) => {
+    try {
+        const customer = await Customer.findById(req.params.id)
+        if (!customer) return res.status(404).json("Resource not found")
+    
+        res.json(customer);
+    } catch (error) {
+        next(error)
+    }
 })
 
 router.post("/", auth, async (req, res) => {
