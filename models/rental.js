@@ -1,3 +1,4 @@
+const Joi = require('joi');
 const { string, required } = require('joi');
 const { db } = require('./db');
 
