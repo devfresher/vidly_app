@@ -1,8 +1,7 @@
 const _ = require('lodash');
-const config = require('config');
 const bcrypt = require('bcrypt');
 const router = require("express").Router();
-const { User, validateLogin, generateAuthToken } = require("../models/user");
+const { User, validateLogin } = require("../models/user");
 
 router.post("/", async (req, res) => {
     let { error } = validateLogin(req.body);
