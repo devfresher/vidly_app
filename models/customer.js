@@ -8,9 +8,6 @@ const Customer = db.model('Customer', new db.Schema({
         minlength: 3,
         maxlength: 255
     },
-    userName: {
-        type: String,
-    },
     isGold: {
         type: Boolean,
         default: false
