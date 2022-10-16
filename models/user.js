@@ -1,8 +1,10 @@
 const Joi = require('joi');
+const config = require('config');
+const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { db } = require('./db');
 
-const User = db.model('User', new db.Schema({
+const userSchema = new db.Schema({
     name: {
         type: String,
         required: true,
@@ -21,7 +23,13 @@ const User = db.model('User', new db.Schema({
         required: true,
         maxlength: 1024
     }
-}))
+})
+
+userSchema.methods.generateAuthToken = function () {
+    return jwt.sign({ _id: this._id}, config.get("jwtPrivateKey"))
+}
+
+const User = db.model('User', userSchema)
 
 function validateUser(user) {
     const schema = Joi.object({
@@ -37,6 +45,15 @@ function validateUser(user) {
     return schema.validate(user);
 }
 
+function validateLogin(req) {
+    const schema = Joi.object({
+        email: Joi.string().required().email(),
+        password: Joi.string().required(),
+    })
+
+    return schema.validate(req);
+}
+
 async function hashPassword (password) {
     const salt = await bcrypt.genSalt(10)
     return await bcrypt.hash(password, salt)
@@ -44,4 +61,5 @@ async function hashPassword (password) {
 
 exports.User = User
 exports.validate = validateUser
+exports.validateLogin = validateLogin
 exports.hashPassword = hashPassword
