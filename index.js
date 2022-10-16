@@ -3,6 +3,9 @@ const genres = require('./routes/genre');
 const customers = require('./routes/customer');
 const movies = require('./routes/movie');
 const rentals = require('./routes/rentals');
+const Joi = require('joi');
+
+Joi.objectId = require('joi-objectid')(Joi);
 
 const { db } = require('./models/db');
 const app = express()

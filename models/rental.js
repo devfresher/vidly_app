@@ -1,8 +1,5 @@
 const { string, required } = require('joi');
-let Joi = require('joi');
 const { db } = require('./db');
-
-Joi.objectId = require('joi-objectid')(Joi);
 
 const Rental = db.model('rental', new db.Schema({
     customer: {

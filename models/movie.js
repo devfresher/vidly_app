@@ -1,9 +1,6 @@
 const { string } = require('joi');
-const Joi = require('joi');
 const { db } = require('./db');
 const { genreSchema } = require('./genre');
-
-Joi.objectId = require('joi-objectid')(Joi);
 
 
 const Movie = db.model('movie', new db.Schema({
@@ -20,12 +17,10 @@ const Movie = db.model('movie', new db.Schema({
     },
     numberInStock: {
         type: Number,
-        // default: 0,
         required: true
     },
     dailyRentalRate: {
         type: Number,
-        // default: 0,
         required: true
     },
     dateCreated: {  
