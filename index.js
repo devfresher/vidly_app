@@ -24,6 +24,13 @@ app.use('/api/auth/', auth)
 // Models
 const { db } = require('./models/db');
 
+try {
+    config.get("jwtPrivateKey")
+} catch (error) {
+    console.error("jwtPrivateKey is not defined");
+    process.exit(1)
+}
+
 const hostname = "127.0.0.1"
 const port = config.get("port") || 5000
 
