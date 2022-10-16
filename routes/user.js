@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const auth = require('../middleware/auth');
 const router = require("express").Router();
 const { User, validate, hashPassword } = require("../models/user");
 
@@ -10,12 +11,20 @@ router.get("/", async (req, res) => {
     res.json(users)
 })
 
+router.get("/me", auth, async (req, res) => {
+    const user = await User.findById(req.user._id).select('-password')
+    if (!user) return res.status(404).json("Resource not found")
+
+    res.json(user);
+})
+
 router.get("/:id", async (req, res) => {
     const user = await User.findById(req.params.id)
     if (!user) return res.status(404).json("Resource not found")
 
     res.json(user);
 })
+
 
 router.post("/", async (req, res) => {
     let { error } = validate(req.body);
@@ -29,16 +38,16 @@ router.post("/", async (req, res) => {
     
     await user.save()
     const token  = user.generateAuthToken()
-    
+
     res.header('x-auth-token', token).json(_.pick(user, ['_id', 'name', 'email']))
 })
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
     let { error } = validate(req.body);
     if (error) return res.status(400).json(error.details[0].message)
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
     const user = await User.findByIdAndRemove(req.params.id)
     if (!user) return res.status(404).json("Resource not found")
 
