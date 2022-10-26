@@ -10,6 +10,6 @@ module.exports = function (req, res, next) {
         req.user = decodedToken
         next()
     } catch (error) {
-        return res.status(400).send(error.message)
+        return res.status(400).send('Invalid auth token')
     }
 }

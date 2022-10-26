@@ -1,12 +1,12 @@
-const Joi = require('joi')
-const { db } = require('./db')
+const Joi = require('joi');
+const mongoose = require('mongoose');
 
-const genreSchema = new db.Schema({
+const genreSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 3,
-        maxlength: 255
+        minlength: 5,
+        maxlength: 50
     },
     dateCreated: {
         type: Date,
@@ -14,13 +14,13 @@ const genreSchema = new db.Schema({
         required: true
     }
 })
-const Genre = db.model('genre', genreSchema)
+const Genre = mongoose.model('genre', genreSchema)
 
 function validateGenre(genre) {
     const schema = Joi.object({
         name: Joi.string()
-            .min(3)
-            .max(255)
+            .min(5)
+            .max(50)
             .required(),
     })
 

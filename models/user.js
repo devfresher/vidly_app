@@ -2,9 +2,9 @@ const Joi = require('joi');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const { db } = require('./db');
+const { default: mongoose } = require('mongoose');
 
-const userSchema = new db.Schema({
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -36,7 +36,7 @@ userSchema.methods.generateAuthToken = function () {
     }, config.get("jwtPrivateKey"))
 }
 
-const User = db.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
 
 function validateUser(user) {
     const schema = Joi.object({

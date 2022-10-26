@@ -1,3 +1,4 @@
+const { default: mongoose } = require('mongoose');
 const auth = require('../middleware/auth')
 const router = require("express").Router();
 const { Genre, validate } = require("../models/genre");
@@ -10,6 +11,9 @@ router.get("/", async (req, res) => {
 })
 
 router.get("/:id", async(req, res) => {
+    if(!mongoose.Types.ObjectId.isValid(req.params.id)) 
+        return res.status(404).send("Invalid Genre Id")
+
     const genre = await Genre.findById(req.params.id)
     if (!genre) return res.status(404).json("Resource not found")
     

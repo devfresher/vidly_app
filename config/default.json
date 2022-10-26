@@ -1,1 +1,5 @@
-{}
+{
+    "dbConfig": {
+        "url": "mongodb://localhost/vidly"
+    }
+}

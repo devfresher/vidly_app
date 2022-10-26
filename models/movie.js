@@ -1,9 +1,9 @@
 const Joi = require('joi');
-const { db } = require('./db');
+const { default: mongoose } = require('mongoose');
 const { genreSchema } = require('./genre');
 
 
-const Movie = db.model('movie', new db.Schema({
+const Movie = mongoose.model('movie', new mongoose.Schema({
     name: {
         type: String,
         trim: true,

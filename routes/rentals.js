@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
 const { Customer } = require("../models/customer");
-const { db } = require("../models/db");
+const { db } = require("../startup/db");
 const { Movie } = require("../models/movie");
 const { Rental, validate } = require("../models/rental");
 

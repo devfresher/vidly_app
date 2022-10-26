@@ -1,10 +1,9 @@
 const Joi = require('joi');
-const { string, required } = require('joi');
-const { db } = require('./db');
+const { default: mongoose } = require('mongoose');
 
-const Rental = db.model('rental', new db.Schema({
+const Rental = mongoose.model('rental', new mongoose.Schema({
     customer: {
-        type: new db.Schema({
+        type: new mongoose.Schema({
             name: {
                 type: String,
                 required: true,
@@ -25,7 +24,7 @@ const Rental = db.model('rental', new db.Schema({
         required: true
     },
     movie: {
-        type: new db.Schema({
+        type: new mongoose.Schema({
             name: {
                 type: String,
                 trim: true,
