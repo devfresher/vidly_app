@@ -10,5 +10,8 @@ require('./startup/validation')()
 const {hostname, port} = require('./startup/config')
 
 
-const server  = app.listen(port, () =>{ winston.info(`Server instance running on http://${hostname}:${port}`)})
-module.exports = server
+if (process.env.NODE_ENV != 'test') {
+    app.listen(port, () =>{ winston.info(`Server instance running on http://${hostname}:${port}`)})
+}
+
+module.exports = app

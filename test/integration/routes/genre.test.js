@@ -5,13 +5,14 @@ const { User } = require('../../../models/user')
 let server, token, name
 
 describe("/api/genres", () => {
+    jest.setTimeout(10000*10);
 
     beforeEach (() => { 
         server = require('../../../index') 
     })
     afterEach (async () => { 
         await Genre.deleteMany({})
-        server.close()
+        // await server.close()
     })
 
     describe("GET /", () => {
