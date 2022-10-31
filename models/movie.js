@@ -2,8 +2,7 @@ const Joi = require('joi');
 const { default: mongoose } = require('mongoose');
 const { genreSchema } = require('./genre');
 
-
-const Movie = mongoose.model('movie', new mongoose.Schema({
+const movieSchema = new mongoose.Schema({
     name: {
         type: String,
         trim: true,
@@ -28,7 +27,12 @@ const Movie = mongoose.model('movie', new mongoose.Schema({
         default: Date.now,
         required: true
     }
-}))
+})
+movieSchema.methods.increaseStock = function () {
+    this.numberInStock += 1
+}
+
+const Movie = mongoose.model('movie', movieSchema)
 
 function validateMovie(movie) {
     const schema = Joi.object({
