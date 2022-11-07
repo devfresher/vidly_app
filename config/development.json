@@ -1,6 +1,6 @@
 {
     "name": "Vidly - Video Rental Application - Dev",
     "dbConfig": {
-        "url": "mongodb://localhost/vidly"
+        "url": "mongodb://localhost/vidly_test"
     }
 }

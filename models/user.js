@@ -40,13 +40,19 @@ const User = mongoose.model('User', userSchema)
 
 function validateUser(user) {
     const schema = Joi.object({
-        name: Joi.string()
-            .min(5)
-            .max(50)
-            .required(),
-
+        name: Joi.string().min(5).max(50).required(),
         email: Joi.string().required().email().min(6).max(255),
         password: Joi.string().min(6).required(),
+    })
+
+    return schema.validate(user);
+}
+
+function validateUpdate(user) {
+    const schema = Joi.object({
+        name: Joi.string().min(5).max(50),
+        email: Joi.string().required().email().min(6),
+        password: Joi.string().min(6),
     })
 
     return schema.validate(user);
@@ -69,4 +75,5 @@ async function hashPassword (password) {
 exports.User = User
 exports.validate = validateUser
 exports.validateLogin = validateLogin
+exports.validateUpdate = validateUpdate
 exports.hashPassword = hashPassword

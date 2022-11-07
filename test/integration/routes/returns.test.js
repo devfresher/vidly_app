@@ -9,8 +9,8 @@ describe('Returns API', () => {
     let rental, movie
     let server, customerId, movieId, token;
 
-    const exec = async () => {
-        return await request(server)
+    const exec = () => {
+        return request(server)
             .post('/api/returns/')
             .set('x-auth-token', token)
             .send({customerId, movieId})

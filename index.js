@@ -7,6 +7,7 @@ require('./startup/logging')()
 require('./startup/routes')(app)
 require('./startup/db')()
 require('./startup/validation')()
+require('./startup/prod')(app)
 const {hostname, port} = require('./startup/config')
 
 
