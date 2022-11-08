@@ -1,1 +1,5 @@
-{}
+{
+    "dbConfig": {
+        "url": "mongodb+srv://vidly_app_user:Z9xNIJLFkmiEzHew@cluster0.ofd0zv2.mongodb.net/?retryWrites=true&w=majority"
+    }
+}
