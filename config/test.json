@@ -2,6 +2,5 @@
     "jwtPrivateKey": "vidly_jwtPrivateKey",
     "dbConfig": {
         "url": "mongodb://localhost/vidly_test"
-    },
-    "port": "3000"
+    }
 }
