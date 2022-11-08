@@ -38,7 +38,10 @@ router.post("/",  async (req, res) => {
     let user = await User.findOne({ email: req.body.email })
     if (user) return res.status(400).send("Email already exit")
 
-    user = new User(_.pick(req.body, ['name', 'email', 'password']))
+    const request = (req.body.isAdmin) ? 
+        _.pick(req.body, ['name', 'email', 'password', 'isAdmin']) : _.pick(req.body, ['name', 'email', 'password'])
+
+    user = new User(request)
     user.password  = await hashPassword(req.body.password)
     await user.save()
 
