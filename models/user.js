@@ -54,6 +54,7 @@ function validateUpdate(user) {
         name: Joi.string().min(5).max(50),
         email: Joi.string().required().email().min(6),
         password: Joi.string().min(6),
+        isAdmin: Joi.boolean()
     })
 
     return schema.validate(user);
